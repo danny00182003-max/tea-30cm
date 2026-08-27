@@ -1,0 +1,41 @@
+:root {
+  --bg: #07080a;
+  --bg2: #0b0d10;
+  --steel: #14171b;
+  --iron: #1d2126;
+  --line: #232830;
+  --red: #e01b2c;
+  --red-hot: #ff2f42;
+  --red-dk: #7c101d;
+  --amber: #ffb02e;
+  --cyan: #39d5ff;
+  --green: #3ddc84;
+  --bone: #e8e6dc;
+  --ash: #9aa0a8;
+  --dim: #79828d;
+  --discord: #5865f2;
+
+  /* Semantic color aliases (for UI/UX Pro Max design system compatibility) */
+  --color-primary: var(--red);
+  --color-primary-hover: var(--red-hot);
+  --color-primary-active: var(--red-dk);
+  --color-secondary: var(--amber);
+  --color-accent: var(--cyan);
+  --color-success: var(--green);
+  --color-background: var(--bg);
+  --color-background-elevated: var(--bg2);
+  --color-surface: var(--steel);
+  --color-surface-raised: var(--iron);
+  --color-border: var(--line);
+  --color-foreground: var(--bone);
+  --color-foreground-muted: var(--ash);
+  --color-foreground-dim: var(--dim);
+  --color-focus: var(--red-hot);
+  --color-ring: var(--red-hot);
+  --color-destructive: var(--red-hot);
+
+  --font-disp: 'Anton', 'Noto Sans TC', sans-serif;
+  --font-stencil: 'Saira Stencil One', 'Noto Sans TC', sans-serif;
+  --font-mono: 'Share Tech Mono', 'Noto Sans TC', monospace;
+  --font-body: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+}

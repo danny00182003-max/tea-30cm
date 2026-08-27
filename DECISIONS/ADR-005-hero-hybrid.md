@@ -1,0 +1,11 @@
+# ADR-005：Phase 1 Hero = 影片背景 + R3F 元件 + scroll 混合架構
+- Status：已定
+- Date：2026-08-23
+- Decision：
+  - 背景：單層影片 loop（全螢幕 video cover）。
+  - 互動 3D：僅 signature 元件用 three.js+R3F，不刻整個 3D 場景。
+  - Scroll：GSAP+ScrollTrigger（reveal/視差）+ Lenis（平滑捲動）。
+  - Hero 開場採 scroll-scrubbing（圖片序列），範圍涵蓋 hero + 作戰中心兩 section；播完平滑過渡到後續 section 正常捲動。
+- 影片來源：Higgsfield（AI 生成），一律原創 tactical/night-ops，禁生可辨識 KRAFTON 資產。不使用 PUBG 遊戲實拍（官方 guideline 為有條件允許，本案選更保守路線）。
+- 對既有 ADR 影響：縮小 ADR-002/003 R3F 適用範圍（Phase 1 光效/氛圍交影片，R3F 收斂到互動元件）；技術棧不變。
+- Trade-offs：影片背景不等於輕量（需 loop 壓縮/poster/手機 fallback，守 <5MB）；Higgsfield 無縫 loop
