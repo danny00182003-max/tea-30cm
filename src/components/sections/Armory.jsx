@@ -1,5 +1,5 @@
 import Emblem from '../svg/Emblem.jsx'
-import { YouTubeIcon, DiscordIcon, TikTokIcon } from '../svg/SocialIcons.jsx'
+import { YouTubeIcon, DiscordIcon, TikTokIcon, PlayIcon } from '../svg/SocialIcons.jsx'
 import { MEMBERS } from '../../data/content.js'
 
 const LINK_ICONS = {
@@ -22,6 +22,17 @@ function MemberCard({ member }) {
       <b className="member-name">{member.name}</b>
       <small className="member-title">{member.title}</small>
       <div className="member-links">
+        {member.highlight && (
+          <a
+            className="mlink mlink--hl"
+            href={member.highlight.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <PlayIcon className="mlink-ic" />
+            <span>{member.highlight.label}</span>
+          </a>
+        )}
         {member.links.map(link => {
           const Icon = LINK_ICONS[link.type]
           const label = LINK_LABELS[link.type]

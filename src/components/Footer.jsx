@@ -17,7 +17,7 @@ export default function Footer() {
         </nav>
         <div className="foot-social">
           {FOOT_SOCIAL.map(s => (
-            <a key={s} href="#" rel="noopener">{s}</a>
+            <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a>
           ))}
         </div>
       </div>

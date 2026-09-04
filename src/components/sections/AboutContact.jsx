@@ -1,3 +1,5 @@
+import { CONTACTS } from '../../data/content.js'
+
 export default function AboutContact() {
   return (
     <section id="sec-about" className="panel">
@@ -8,7 +10,7 @@ export default function AboutContact() {
       <div className="about-cols reveal">
         <div className="about-text">
           <p>
-            <b>30 CM</b> 是由實況主「茶哥」領軍的作戰型實況小隊。以夜間滲透為視覺母題——兜帽、耳機與皇冠，代表開麥前的沉默與上線後的統治。
+            <b>30 CM</b> 是由「茶哥、亞當」領軍的作戰型實況小隊。以夜間滲透為視覺母題——兜帽、耳機與皇冠，代表開麥前的沉默與上線後的統治。
           </p>
           <p>
             我們相信一件事：<b>戴上耳機，開麥即作戰。</b>每晚上線，每週出賽，每一場決賽圈都當最後一戰打。
@@ -18,7 +20,20 @@ export default function AboutContact() {
         <aside className="contact-card">
           <h3>商務合作</h3>
           <p>贊助、活動、跨界企劃——歡迎來信。</p>
-          <a className="btn btn--primary" href="mailto:hello@30cm.gg">hello@30cm.gg</a>
+          <ul className="contact-list">
+            {CONTACTS.map(c => (
+              <li key={c.href}>
+                <span className="contact-label">{c.label}</span>
+                <a
+                  className="contact-value"
+                  href={c.href}
+                  {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  {c.value}
+                </a>
+              </li>
+            ))}
+          </ul>
         </aside>
       </div>
     </section>

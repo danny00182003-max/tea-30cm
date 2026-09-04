@@ -14,6 +14,14 @@ export function DiscordIcon({ className }) {
   )
 }
 
+export function PlayIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 1.6a10.4 10.4 0 1 0 0 20.8 10.4 10.4 0 0 0 0-20.8zm0 2a8.4 8.4 0 1 1 0 16.8 8.4 8.4 0 0 1 0-16.8zM9.8 7.6 16.6 12l-6.8 4.4z" />
+    </svg>
+  )
+}
+
 export function TikTokIcon({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" aria-hidden="true">

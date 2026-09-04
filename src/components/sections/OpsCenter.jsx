@@ -1,4 +1,4 @@
-import { MINI_SCHEDULE } from '../../data/content.js'
+import { PLATFORMS } from '../../data/content.js'
 import useHeroMode from '../../hooks/useHeroMode.js'
 
 const BARS = Array.from({ length: 8 })
@@ -81,16 +81,18 @@ export default function OpsCenter() {
         <h2>現在直播中 <span className="live-tag"><i className="live-dot"></i>LIVE</span></h2>
         <p>監控牆已上線——賽況、地圖、火力全在螢幕上。</p>
         <div className="platforms">
-          <a className="btn btn--twitch" href="#" rel="noopener">Twitch</a>
-          <a className="btn btn--youtube" href="#" rel="noopener">YouTube</a>
-        </div>
-        <ul className="mini-sched">
-          {MINI_SCHEDULE.map(m => (
-            <li key={m.time + m.text}>
-              <time>{m.time}</time>{m.text}
-            </li>
+          {PLATFORMS.map(p => (
+            <a
+              key={p.id}
+              className={`btn btn--${p.variant}`}
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {p.label}
+            </a>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   )
