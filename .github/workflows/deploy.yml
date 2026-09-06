@@ -24,7 +24,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       # 用 lockfile 精準安裝，確保與本機同版
@@ -32,7 +32,11 @@ jobs:
 
       - run: npm run build
 
+      # enablement: 若 repo 尚未啟用 Pages 就自動啟用，
+      # 免去必須先到 Settings 手動切換 Source 的順序問題
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
