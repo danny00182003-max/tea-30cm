@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import useStaticMode from './hooks/useStaticMode.js'
+import useAnimationPause from './hooks/useAnimationPause.js'
 import BootOverlay from './components/BootOverlay.jsx'
 import TopBar from './components/TopBar.jsx'
 import DotNav from './components/DotNav.jsx'
 import FxOverlays from './components/FxOverlays.jsx'
+import GunfireFx from './components/GunfireFx.jsx'
 import Hero from './components/sections/Hero.jsx'
 import OpsCenter from './components/sections/OpsCenter.jsx'
 import Armory from './components/sections/Armory.jsx'
@@ -15,6 +17,7 @@ import Footer from './components/Footer.jsx'
 
 export default function App() {
   const isStatic = useStaticMode()
+  useAnimationPause()
 
   useEffect(() => {
     document.body.classList.toggle('static', isStatic)
@@ -50,6 +53,7 @@ export default function App() {
       </main>
       <Footer />
       <FxOverlays />
+      <GunfireFx />
     </>
   )
 }

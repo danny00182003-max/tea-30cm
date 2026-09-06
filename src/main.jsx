@@ -4,6 +4,8 @@ import App from './App.jsx'
 import './styles/tokens.css'
 import './styles/base.css'
 import './styles/sections.css'
+import './styles/weapons.css'
+import './styles/shells.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

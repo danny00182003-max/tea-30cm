@@ -48,6 +48,21 @@
   50% { transform: translate(-50%, 8px); }
 }
 .exit-hint { margin-top: 44px; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.3em; color: var(--dim); }
+.exit-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 10px;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 6px;
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+.exit-link:focus-visible,
+.exit-link:active { color: var(--bone); text-decoration-color: var(--red-hot); }
+@media (hover: hover) and (pointer: fine) {
+  .exit-link:hover { color: var(--bone); text-decoration-color: var(--red-hot); }
+}
 
 .hero-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 .hero-canvas canvas { opacity: 0.85; }
@@ -299,6 +314,7 @@ body.scrub-on .scene--ops .ops-poster-bg { display: none; }
   inset: auto;
   height: auto;
   padding-top: 9vh;
+  padding-bottom: 4vh;
   overflow: visible;
 }
 .scene--ops .content {
@@ -364,14 +380,16 @@ body.scrub-on .scene--ops .ops-poster-bg { display: none; }
 .f-bars i {
   flex: 1;
   background: linear-gradient(180deg, var(--cyan), #116d8a);
-  height: 30%;
+  /* 固定高度 + scaleY：只跑 compositor，不觸發 layout */
+  height: 78%;
   transform-origin: bottom;
+  transform: scaleY(0.282);
   animation: barGrow 1.6s ease-in-out infinite;
 }
 .f-bars i:nth-child(odd) { animation-delay: 0.3s; }
 .f-bars i:nth-child(2n) { animation-delay: 0.6s; }
 .f-bars i:nth-child(3n) { animation-delay: 0.9s; }
-@keyframes barGrow { 0%, 100% { height: 22%; } 50% { height: 78%; } }
+@keyframes barGrow { 0%, 100% { transform: scaleY(0.282); } 50% { transform: scaleY(1); } }
 .f-radar::before {
   content: "";
   position: absolute;
@@ -453,26 +471,14 @@ body.scrub-on .scene--ops .ops-poster-bg { display: none; }
   letter-spacing: 0.06em;
 }
 .caret { animation: pulse 0.9s infinite steps(2); }
-.console {
-  position: relative;
-  bottom: auto;
-  left: auto;
-  transform: none;
-  margin: 3.5vh auto 0;
-  width: min(900px, 90vw);
-  height: 11vh;
-  background: linear-gradient(180deg, #171b21, #0b0d11);
-  border: 1px solid #262c35;
-  border-radius: 0;
-  box-shadow: 0 -14px 44px rgba(0, 0, 0, 0.6);
-}
-.console i { position: absolute; top: 34%; width: 9px; height: 9px; border-radius: 50%; animation: pulse 2.2s infinite; }
-.console i:nth-child(1) { left: 8%; background: var(--cyan); box-shadow: 0 0 9px var(--cyan); }
-.console i:nth-child(2) { left: 16%; background: var(--amber); box-shadow: 0 0 9px var(--amber); animation-delay: 0.4s; }
-.console i:nth-child(3) { left: 24%; background: var(--green); box-shadow: 0 0 9px var(--green); animation-delay: 0.8s; }
-.console i:nth-child(4) { right: 24%; background: var(--red-hot); box-shadow: 0 0 9px var(--red-hot); animation-delay: 1.2s; }
-.console i:nth-child(5) { right: 16%; background: var(--cyan); box-shadow: 0 0 9px var(--cyan); animation-delay: 1.6s; }
-.console i:nth-child(6) { right: 8%; background: var(--amber); box-shadow: 0 0 9px var(--amber); animation-delay: 2s; }
+
+/* 靜止監控畫面保留圖像，只有 LIVE 螢幕持續動；hover 掃描在 feed 外層。 */
+.monitor:not(.hud-frame--live) .feed,
+.monitor:not(.hud-frame--live) .feed::before,
+.monitor:not(.hud-frame--live) .feed::after,
+.monitor:not(.hud-frame--live) .feed *,
+.monitor:not(.hud-frame--live) .feed *::before,
+.monitor:not(.hud-frame--live) .feed *::after { animation: none; }
 
 /* === OpsCenter FUI Enhancements === */
 /* .monitor 的 flickOn 與 .hud-frame--live 的 hudLive 都用 animation 簡寫，
@@ -613,12 +619,30 @@ body.scrub-on .scene--ops .ops-poster-bg { display: none; }
   border: 1px solid var(--line);
   background: linear-gradient(180deg, #101318, #0b0d11);
   clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
-  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+  transition: border-color 0.2s;
 }
-.member-card:hover {
-  border-color: var(--red-dk);
-  box-shadow: 0 0 24px rgba(224, 27, 44, 0.25);
-  transform: translateY(-4px);
+.member-card::after {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: 13px;
+  width: 12px;
+  height: 12px;
+  border-top: 1px solid var(--red-hot);
+  border-left: 1px solid var(--red-hot);
+  pointer-events: none;
+  transition: transform 200ms ease;
+}
+.member-card:focus-within::after { transform: translate(2px, 2px); }
+@media (hover: hover) and (pointer: fine) {
+  .member-card:hover {
+    border-color: var(--red-dk);
+  }
+  .member-card:hover::after { transform: translate(2px, 2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .member-card:hover::after,
+  .member-card:focus-within::after { transform: none; }
 }
 .member-card .cone { top: -3vh; height: 14vh; }
 .member-mark {
@@ -702,6 +726,23 @@ body.scrub-on .scene--ops .ops-poster-bg { display: none; }
 }
 .cone-a { left: 31vw !important; }
 .cone-b { left: 47vw !important; }
+
+/* 聚光燈呼吸：兩盞燈各自緩慢明滅，週期不同且錯開起始，
+   避免同步閃爍看起來像整體調亮度。
+   只動 opacity（compositor 處理，不觸發 layout/paint），
+   .cone 是與軍械室成員卡共用的 class，故限定在 scene--trophy 內。 */
+.scene--trophy .cone-a { animation: coneBreath 7.5s ease-in-out infinite; }
+.scene--trophy .cone-b { animation: coneBreath 9.2s ease-in-out -3.4s infinite; }
+@keyframes coneBreath {
+  0%, 100% { opacity: 0.62; }
+  50% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* 全域規則會把動畫壓成 0.01ms / 跑一次，等於凍結在 0.62 起始值（比原本暗）。
+     這裡明確關掉動畫並還原全亮，避免聚光燈莫名變暗。 */
+  .scene--trophy .cone-a,
+  .scene--trophy .cone-b { animation: none !important; opacity: 1; }
+}
 .shelf { position: absolute; bottom: 9vh; left: 0; right: 0; display: flex; justify-content: center; align-items: flex-end; gap: 6vw; }
 .pedestal { position: relative; text-align: center; }
 .pedestal--champion { transform: translateY(-16px); }
@@ -850,14 +891,16 @@ body.scrub-on .scene--ops .ops-poster-bg { display: none; }
   background: linear-gradient(180deg, var(--amber), rgba(224, 27, 44, 0.45));
   border-radius: 0;
   animation: eqJump 1.1s ease-in-out infinite;
-  height: 30%;
+  height: 85%;
+  transform-origin: bottom;
+  transform: scaleY(0.259);
 }
 .eq span:nth-child(2n) { animation-delay: 0.15s; }
 .eq span:nth-child(3n) { animation-delay: 0.3s; height: 60%; }
 .eq span:nth-child(5n) { animation-delay: 0.45s; height: 45%; }
 .eq span:nth-child(7n) { animation-delay: 0.6s; }
-.eq span:nth-child(11n) { animation-delay: 0.75s; height: 70%; }
-@keyframes eqJump { 0%, 100% { height: 22%; } 50% { height: 85%; } }
+.eq span:nth-child(11n) { animation-delay: 0.75s; transform: scaleY(0.824); }
+@keyframes eqJump { 0%, 100% { transform: scaleY(0.259); } 50% { transform: scaleY(1); } }
 .meta { margin-top: 18px; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.16em; color: var(--ash); }
 .social-row { display: flex; gap: 22px; margin-top: 22px; justify-content: center; }
 .social-row a {
@@ -890,7 +933,9 @@ body.scrub-on .scene--ops .ops-poster-bg { display: none; }
   padding: 26px 24px;
   transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
-.team-role:hover { border-color: var(--red-dk); box-shadow: inset 0 0 30px rgba(224, 27, 44, 0.08); transform: translateY(-3px); }
+@media (hover: hover) and (pointer: fine) {
+  .team-role:hover { border-color: var(--red-dk); box-shadow: inset 0 0 30px rgba(224, 27, 44, 0.08); transform: translateY(-3px); }
+}
 .team-role-name {
   font-family: var(--font-mono);
   font-size: 0.7rem;

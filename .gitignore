@@ -3,3 +3,7 @@ dist/
 _prototype/ 
 *.local 
 .DS_Store
+assets-src/
+
+perf/
+claude-landing-task.txt

@@ -1,5 +1,6 @@
 import Emblem from './svg/Emblem.jsx'
 import { FOOT_NAV, FOOT_SOCIAL } from '../data/content.js'
+import scrollToSection from '../lib/scrollTo.js'
 
 export default function Footer() {
   return (
@@ -12,7 +13,7 @@ export default function Footer() {
         </div>
         <nav className="foot-nav" aria-label="頁尾導覽">
           {FOOT_NAV.map(l => (
-            <a key={l.href} href={l.href}>{l.label}</a>
+            <a key={l.href} href={l.href} onClick={e => scrollToSection(e, l.href)}>{l.label}</a>
           ))}
         </nav>
         <div className="foot-social">

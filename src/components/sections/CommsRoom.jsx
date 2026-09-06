@@ -1,4 +1,5 @@
 import { DISCORD_CHANNELS } from '../../data/content.js'
+import scrollToSection from '../../lib/scrollTo.js'
 
 const EQ = Array.from({ length: 18 })
 
@@ -31,7 +32,16 @@ export default function CommsRoom() {
             </a>
           ))}
         </div>
-        <p className="exit-hint">EXIT → 回到夜色</p>
+        <p className="exit-hint">
+          <a
+            className="exit-link"
+            href="#hero"
+            aria-label="EXIT → 回到夜色（返回首頁）"
+            onClick={e => scrollToSection(e, '#hero')}
+          >
+            EXIT → 回到夜色
+          </a>
+        </p>
       </div>
     </section>
   )

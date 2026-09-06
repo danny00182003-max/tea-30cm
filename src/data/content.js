@@ -15,7 +15,7 @@ export const NAV_LINKS = [
 ]
 
 export const STOPS = [
-  { id: 'hero', label: '01 外景 // BREACH' },
+  { id: 'hero', label: '01 主頁 // MAIN' },
   { id: 'ops', label: '02 作戰中心 // OPS' },
   { id: 'armory', label: '03 軍械室 // ARMORY' },
   { id: 'trophy', label: '04 榮譽室 // TROPHY' },
@@ -68,12 +68,14 @@ export const DISCORD_CHANNELS = [
 
 export const TEAM = [
   {
-    role: '網頁設計師',
+    role: '網頁製作',
     members: [{ name: '靖', email: 'danny00182003@gmail.com' }],
   },
   {
     role: '剪片團隊',
-    members: [{ name: '亞當' }, { name: '茶哥' }],
+    members: [
+      { name: '亞當', email: 'adambusiness543@gmail.com' },
+      { name: '茶哥', email: 'love6098787@yahoo.com.tw' }],
   },
 ]
 
@@ -84,7 +86,7 @@ export const CONTACTS = [
 ]
 
 export const FOOT_NAV = [
-  { label: '外景', href: '#hero' },
+  { label: '主頁', href: '#hero' },
   { label: '直播', href: '#ops' },
   { label: '成員', href: '#armory' },
   { label: '戰績', href: '#trophy' },

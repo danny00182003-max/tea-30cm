@@ -89,7 +89,9 @@ h2 {
   padding: 18px 46px;
   box-shadow: 0 0 28px rgba(88, 101, 242, 0.45);
 }
-.btn--discord:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(88, 101, 242, 0.7); }
+@media (hover: hover) and (pointer: fine) {
+  .btn--discord:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(88, 101, 242, 0.7); }
+}
 
 @keyframes pulse {
   0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--red-hot); }
@@ -189,6 +191,10 @@ h2 {
   animation: pulse 1.4s infinite;
 }
 
+/* === 區塊導覽指示器（右側 DotNav）===
+   切角沿用 .hud-frame 的語言。與 .hud-frame 同一個理由：clip-path 會連同
+   box-shadow 一起裁掉，所以切角畫在 .dot-mark::before，發光由未被裁切的
+   .dot-mark 本體以 drop-shadow 提供，光暈才會沿著切角輪廓走。 */
 #dotnav {
   position: fixed;
   right: 22px;
@@ -197,21 +203,50 @@ h2 {
   z-index: 60;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 #dotnav a {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 3px 0;
+}
+.dot-num {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.62rem;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  color: var(--ash);
+  transition: color 200ms ease;
+}
+.dot-mark {
+  position: relative;
   width: 11px;
   height: 11px;
-  border: 1px solid var(--dim);
-  border-radius: 0;
-  transition: 0.25s;
-  display: block;
+  flex: none;
+  transition: filter 200ms ease;
 }
-#dotnav a:hover { border-color: var(--red-hot); background: var(--red-hot); box-shadow: 0 0 12px rgba(224, 27, 44, 0.8); }
+.dot-mark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--line);
+  clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+#dotnav a:hover .dot-num,
+#dotnav a:focus-visible .dot-num { color: var(--bone); }
+#dotnav a:hover .dot-mark::before,
+#dotnav a:focus-visible .dot-mark::before { border-color: var(--red); }
+#dotnav a.is-active .dot-num { color: var(--bone); }
+#dotnav a.is-active .dot-mark { filter: drop-shadow(0 0 5px rgba(224, 27, 44, 0.55)); }
+#dotnav a.is-active .dot-mark::before { background: var(--red); border-color: var(--red); }
 #dotnav a span {
   position: absolute;
-  right: 24px;
+  right: calc(100% + 12px);
   top: 50%;
   transform: translateY(-50%) translateX(6px);
   white-space: nowrap;
@@ -219,15 +254,15 @@ h2 {
   font-size: 0.68rem;
   letter-spacing: 0.2em;
   color: var(--ash);
-  background: rgba(10, 11, 14, 0.9);
-  border: 1px solid var(--line);
-  padding: 5px 10px;
+  background: rgba(10, 11, 14, 0.92);
+  border: 1px solid rgba(224, 27, 44, 0.5);
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  padding: 6px 12px;
   opacity: 0;
   pointer-events: none;
-  transition: 0.25s;
+  transition: opacity 200ms ease, transform 200ms ease;
 }
 #dotnav a:hover span, #dotnav a:focus-visible span { opacity: 1; transform: translateY(-50%) translateX(0); }
-
 .fx { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
 .fx-vignette { background: radial-gradient(ellipse at 50% 45%, transparent 52%, rgba(0, 0, 0, 0.62) 100%); }
 .fx-scanlines {
@@ -238,15 +273,9 @@ h2 {
   opacity: 0.07;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
-  animation: jitter 0.6s steps(3) infinite;
+  /* 靜態化：原本 jitter 動畫每 0.2s 重繪整個視窗尺寸的圖層，
+     視覺收益極低但吃滿合成頻寬，改為固定顆粒 */
 }
-@keyframes jitter {
-  0% { background-position: 0 0; }
-  33% { background-position: -40px 30px; }
-  66% { background-position: 50px -20px; }
-  100% { background-position: 0 0; }
-}
-body.static .fx-grain { animation: none; }
 
 /* === HUD 邊框（可複用）===
    套在任何容器上即可。框襯畫在 ::before，外發光靠本體 filter：
@@ -284,13 +313,25 @@ body.static .fx-grain { animation: none; }
   clip-path: polygon(11px 0, 100% 0, 100% 100%, 0 100%, 0 11px);
   pointer-events: none;
 }
-.hud-frame:not(.hud-frame--live):hover { filter: drop-shadow(0 0 8px rgba(224, 27, 44, 0.55)); }
+@media (hover: hover) and (pointer: fine) {
+  .hud-frame:not(.hud-frame--live):hover { filter: drop-shadow(0 0 8px rgba(224, 27, 44, 0.55)); }
+}
 
 .hud-frame--live { animation: hudLive 3.2s ease-in-out infinite; }
 @keyframes hudLive {
   0%, 100% { filter: drop-shadow(0 0 7px rgba(224, 27, 44, 0.5)); }
   50% { filter: drop-shadow(0 0 12px rgba(224, 27, 44, 0.7)); }
 }
+
+/* 分頁隱藏 / 區塊離開畫面時暫停裝飾動畫。
+   只暫停 CSS animation（animation-play-state），不動 GSAP 的 inline transform，
+   因此與 ScrollTrigger 驅動的位移互不覆蓋。 */
+body.anim-paused *,
+body.anim-paused *::before,
+body.anim-paused *::after,
+.scene-paused *,
+.scene-paused *::before,
+.scene-paused *::after { animation-play-state: paused !important; }
 
 .reveal { opacity: 0; transform: translateY(34px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .reveal.in-view { opacity: 1; transform: none; }
@@ -302,9 +343,89 @@ body.static .fx-grain { animation: none; }
     transition-duration: 0.01ms !important;
   }
   html { scroll-behavior: auto; }
+  /* 當前項發光收斂 */
+  #dotnav a.is-active .dot-mark { filter: drop-shadow(0 0 3px rgba(224, 27, 44, 0.4)); }
   /* 脈動改成靜態強發光，不留殘影 */
   .hud-frame--live {
     animation: none !important;
     filter: drop-shadow(0 0 9px rgba(224, 27, 44, 0.6));
   }
+}
+
+/* === 互動精修 ===
+   全部收在 (hover:hover) and (pointer:fine) 之內，觸控裝置不會被 hover
+   殘留卡住；觸控回饋另以 :active 提供。位移一律用 transform / opacity。
+   外部連結不加任何等待動畫，點了就開。 */
+@media (hover: hover) and (pointer: fine) {
+  /* 主按鈕：箭頭前移 3px */
+  .btn--primary::before {
+    transition: transform 160ms ease;
+  }
+  .btn--primary:hover::before { transform: translateX(3px); }
+
+  /* 次要按鈕與社群連結：收掉光暈，改短促底線 */
+  .btn--ghost:hover { box-shadow: none; }
+  .foot-social a, .social-row a { position: relative; }
+  .foot-social a::after, .social-row a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1px;
+    background: var(--red-hot);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 160ms ease;
+  }
+  .foot-social a:hover::after, .social-row a:hover::after { transform: scaleX(1); }
+
+  /* 監控牆：平常只留一個主要動態，hover 時該格掃描一次 */
+  .monitor { transition: filter 200ms ease; }
+  .monitor:hover .monitor-frame::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 34%;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent, rgba(224, 27, 44, 0.16), transparent);
+    animation: monitorSweep 400ms ease-out 1 both;
+  }
+
+  /* About / 聯絡區保持安靜：只動連結底線 */
+  .contact-value, .team-mail { transition: color 160ms ease, border-color 160ms ease; }
+}
+
+@keyframes monitorSweep {
+  from { transform: translateY(-120%); }
+  to { transform: translateY(320%); }
+}
+
+/* 觸控：以按壓回饋取代 hover */
+.btn:active { transform: translateY(1px); }
+@media (hover: hover) and (pointer: fine) {
+  /* 按壓下沉 1px / 80ms */
+  .btn { transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 80ms ease; }
+  .btn:active { transform: translateY(1px); }
+}
+
+/* 減少動態：位移與掃描一律關閉，只保留狀態變化 */
+@media (prefers-reduced-motion: reduce) {
+  .btn--primary:hover::before,
+  .btn:active { transform: none !important; }
+  .monitor:hover .monitor-frame::after { animation: none !important; }
+}
+
+/* 導覽：抵達區塊時對應標記短亮一次（.is-active 由 DotNav 的
+   IntersectionObserver 掛上，動畫只跑一次，不做持續脈動） */
+#dotnav a.is-active .dot-mark::before { animation: dotArrive 320ms ease-out 1; }
+@keyframes dotArrive {
+  0% { box-shadow: 0 0 0 0 rgba(224, 27, 44, 0.55); }
+  100% { box-shadow: 0 0 0 7px rgba(224, 27, 44, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #dotnav a.is-active .dot-mark::before { animation: none !important; }
 }

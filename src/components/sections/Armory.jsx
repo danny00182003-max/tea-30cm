@@ -1,4 +1,5 @@
 import Emblem from '../svg/Emblem.jsx'
+import WeaponDisplay from '../svg/WeaponDisplay.jsx'
 import { YouTubeIcon, DiscordIcon, TikTokIcon, PlayIcon } from '../svg/SocialIcons.jsx'
 import { MEMBERS } from '../../data/content.js'
 
@@ -63,8 +64,9 @@ export default function Armory() {
       </div>
       <div className="content align-center wide">
         <p className="kicker">SECTOR 03 // 軍械室</p>
-        <h2>一槍，一人。</h2>
+        <h2>一槍，一個</h2>
         <p>小隊現役名單——點擊直達各成員的頻道與社群。</p>
+        <WeaponDisplay />
         <ul className="member-grid">
           {MEMBERS.map(m => <MemberCard key={m.name} member={m} />)}
         </ul>

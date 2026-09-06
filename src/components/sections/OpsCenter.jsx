@@ -11,7 +11,7 @@ export default function OpsCenter() {
         {mode !== 'scrub' && (
           <img
             className="ops-poster-bg"
-            src={`${import.meta.env.BASE_URL}hero-poster.png`}
+            src={`${import.meta.env.BASE_URL}hero-poster.webp`}
             alt=""
           />
         )}
@@ -71,9 +71,6 @@ export default function OpsCenter() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="console">
-          <i></i><i></i><i></i><i></i><i></i><i></i>
         </div>
       </div>
       <div className="content align-right">

@@ -1,5 +1,5 @@
 # Tea Project — PROJECT STATUS
-> 更新：2026-08-24｜進 session 先讀本檔 + DECISIONS/ + CLAUDE.md
+> 更新：2026-09-05｜進 session 先讀本檔 + DECISIONS/ + CLAUDE.md
 
 
 ## Current Phase
@@ -12,6 +12,9 @@ Vite + React 18.3 + R3F 8.18（three npm 裝）｜GSAP+ScrollTrigger+Lenis｜純
 
 
 ## Completed
+- 2026-09-06：軍械室加入 AUG 原創 SVG 剪影、準星收束與拉柄動畫；主要按鈕／成員連結加入一次性擊發與拋殼回饋。無新套件／外部圖片，gzip 約增 2 kB；驗證見 perf/weapons/verification.json。
+- 2026-09-06：修正成員卡 hover 層疊衝突與聚光燈誤位移；獨立角標提供 hover/focus 回饋，監控牆僅 LIVE 持續動態。
+- 2026-09-06：補上區塊離畫面／背景分頁 CSS 與 3D 暫停、lazy 3D 的固定淡出容器、模式切換時 GSAP 樣式還原；本機瀏覽器驗證見 perf/review-fixes/verification.json。
 - ADR-005 定案：Hero =影片背景 + R3F 元件 + scroll 混合架構
 - 舊 vanilla 原型重建為 Vite+React+R3F（舊版備份 _prototype/）；vite dev/build 通過；React18+fiber8 鎖版；設計資產已移植
 - Hero 素材入 public/：hero-bg.mp4（迷霧→指揮官,5s,5.3MB）、hero-poster.png、hero-frames/（154 幀,10.9MB）
@@ -40,7 +43,7 @@ Vite + React 18.3 + R3F 8.18（three npm 裝）｜GSAP+ScrollTrigger+Lenis｜純
 
 
 ## Backlog
-- ARMORY 槍枝 SVG 剪影美化
+- **Hero 重大視覺構圖調整／是否移除八面體**：需先產 2–3 個 concept mockup → 客戶確認後才進 coding，本輪未動（僅做 lazy load，3D 與構圖皆保留）
+- 影格減幀 154→72~90：已量測可再省約 40%，但需真人確認 scrub 手感，未執行
 - ComfyUI 本地生圖環境（RTX 5060 8GB）
-- bundle code-split + 3D lazy load（three 打進主 chunk 980KB）
 - 反 AI 味改造：硬邊/破對稱/等寬字/加噪點（隨 skill 導入一起做）
